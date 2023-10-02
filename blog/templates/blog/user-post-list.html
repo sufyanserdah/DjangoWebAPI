@@ -1,0 +1,166 @@
+{% if not posts %}
+              <div id="notfound" style="position: relative; height: 30vh">
+                <div
+                  class="notfound"
+                  style="
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    -webkit-transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  <div
+                    class="notfound-404"
+                    style="
+                      position: relative;
+                      height: 200px;
+                      margin: 0px auto 20px;
+                      z-index: -1;
+                    "
+                  >
+                    <h1
+                      style="
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 150px;
+                        font-weight: 200;
+                        margin: 0px;
+                        color: #211b19;
+                        text-transform: uppercase;
+                        position: absolute;
+                        left: 50%;
+                        top: 55%;
+                        -webkit-transform: translate(-50%, -50%);
+                        -ms-transform: translate(-50%, -50%);
+                        transform: translate(-50%, -50%);
+                      "
+                    >
+                      Oops!
+                    </h1>
+                    <h2
+                      style="
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 17px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        color: #211b19;
+                        background: #fff;
+                        padding: 10px 5px;
+                        margin: auto;
+                        display: inline-block;
+                        position: absolute;
+                        top: 75%;
+    width: 231%;
+    margin-left: -65%;
+                      "
+                    >
+                      You currently have no posts
+                    </h2>
+                  </div>
+                  <div class="container-login100-form-btn" style="opacity: 0%;">
+                    <a>
+                      <input type="hidden" class="login100-form-btn">
+                        Back to HomePage
+                      </a
+                    >
+                  </div>
+                </div>
+              </div>
+              {% else %}
+{% for post in posts %}
+
+<div class="main-block post-with-photo" id="post-list">
+  <div class="Post-Box">
+    <div class="header row" style="width: 100%">
+      <div class="col-1" style="padding-right: 9%; padding-top: 1%">
+        <div class="pt-2 pl-2 d-inline-block">
+          <div
+            class="Profile-Picture"
+            style="background: url('{{ post.author.image.url }}') "
+          ></div>
+        </div>
+      </div>
+
+      <div class="col-8 p-l-0">
+        <div class="UserName d-inline-block mt-3" style="width: 144%">
+          <div style="display: inline-block; width: 35%;">
+            <p>
+              <a
+                href="{% url 'profile-detail-view' post.author.slug %}"
+                class="font-weight-bold"
+                >{{ post.author.user }}</a
+              >
+            </p>
+            <p class="lh-1-2">
+              {{ post.date_posted|date:"F d, Y" }}
+              <i
+                class="fa fa-globe fs-10"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Public"
+              ></i>
+              <br />
+              <a href=" {%url 'post-detail' post.id%} " class="fs-10"
+                >post-details</a
+              >
+            </p>
+          </div>
+        
+          <div style="display: inline; padding-left: 42%">
+             {% if request.user == post.author.user %}
+            <a href="{% url 'post-update' post.pk %}" style="padding: 5%"
+              ><i class="fa fa-edit fa-2x"></i
+            ></a>
+            <a href="{% url 'post-delete' post.pk %}"
+              ><i class="fa fa-trash fa-2x" aria-hidden="true"></i
+            ></a>
+            {% endif %}
+          </div>
+           
+        </div>
+      </div>
+    </div>
+    <hr class="m-2" />
+
+    <div class="details col">
+      <p class="px-3" style="padding: 10px">{{ post.content }}</p>
+    </div>
+
+    {% if post.post_image %}
+
+    <div class="col" style="width: auto; text-align: center">
+      <img
+        src="{{ post.post_image.url }}"
+        alt=""
+        style="max-width: 50%; height: auto"
+      />
+    </div>
+
+    {% endif %}
+
+    <hr class="mt-0 mb-0" />
+    <div class="footer">
+      <div class="row action-btn">
+        <div class="col">
+         {% include 'blog/Likes_profile.html' %}
+        </div>
+        <div class="col border-left">
+          <p class="py-2 footer-btn text-center">
+            <a href=""
+              ><i class="fa fa-comment-o" aria-hidden="true"></i>
+              <span class="px-1"> Comment</span></a
+            >
+          </p>
+        </div>
+      </div>
+      <hr class="mt-0 mb-2" />
+      <div class="row comment-list" id="prof_com">
+       {% include 'blog/comments_prof.html' %}
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}

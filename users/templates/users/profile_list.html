@@ -1,0 +1,191 @@
+{% extends 'blog/base.html' %} {% block content %} {% if is_empty %}
+<div id="notfound" style="position: relative; height: 84vh">
+  <div
+    class="notfound"
+    style="
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    "
+  >
+    <div
+      class="notfound-404"
+      style="
+        position: relative;
+        height: 200px;
+        margin: 0px auto 20px;
+        z-index: -1;
+      "
+    >
+      <h1
+        style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 236px;
+          font-weight: 200;
+          margin: 0px;
+          color: #211b19;
+          text-transform: uppercase;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+        "
+      >
+        Oops!
+      </h1>
+      <h2
+        style="
+          font-family: 'Montserrat', sans-serif;
+          font-size: 28px;
+          font-weight: 400;
+          text-transform: uppercase;
+          color: #211b19;
+          background: #fff;
+          padding: 10px 5px;
+          margin: auto;
+          display: inline-block;
+          position: absolute;
+          bottom: 0px;
+          left: 0;
+          right: 0;
+          width: 235%;
+          margin-left: -61%;
+        "
+      >
+        There are currently no users
+      </h2>
+    </div>
+    <div class="container-login100-form-btn">
+      <a href="{% url 'blog-home' %}">
+        <button class="login100-form-btn">Back to HomePage</button></a
+      >
+    </div>
+  </div>
+</div>
+
+{% endif %}
+<div class="container mt-5" style="width: 75%">
+  <div class="row">
+    <div class="col">
+      <div class="main-block">
+        {% for obj in qs %}
+        <div class="ui segment" style="margin: 20px">
+          <div class="ui grid">
+            <div class="row" style="padding: 20px; margin: 20px; height: 90px">
+              <div
+                style="background: url('{{ obj.image.url }}');border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    margin-left: -25px;
+    margin-top: -23px;
+    border: 3px solid #8B54C7;
+    background-size: cover !important;
+    background-position: center top !important;"
+              ></div>
+
+              <div
+                class="thirteen wide column"
+                style="display: inline; margin-top: -5%"
+              >
+                <span
+                  style="
+                    width: 100%;
+                    height: 55px;
+                    display: inline;
+                    font-family: Poppins-Bold;
+                    padding-left: 1%;
+                    line-height: 2;
+                    font-size: x-large;
+                    display: inline-block;
+                  "
+                >
+                  <p
+                    class="login100-form-title animated"
+                    style="
+                      display: inline-block;
+                      font-family: Poppins-Bold;
+                      font-size: 24px;
+                      color: #333333;
+                      line-height: 1.2;
+                      width: 15%;
+    text-align: -webkit-left;
+                    "
+                  >
+                    {{obj.user}}
+                  </p>
+                  {% if obj.user not in rel_receiver and obj.user not in rel_sender %}
+                  <form
+                    action=" {% url 'send-invite' %} "
+                    method="POST"
+                    style="display: inherit; margin-left: 3.5%"
+                  >
+                    {% csrf_token %}
+                    <input type="hidden" name="profile_pk" value="{{obj.pk}}" />
+                    <div style="    display: inline-block;
+    width: 225%;
+    text-align: -webkit-right;">
+                    <button type="submit" class="ui positive basic button mb-5">
+                      <i class="fa fa-user-plus" aria-hidden="true"></i>
+                    </button></div>
+                  </form>
+                  {% endif %} {% if obj.user in rel_receiver and request.user not in obj.friends.all %}
+                  <div style="    display: inline-block;
+    width: 27%;
+    text-align: -webkit-right;">
+                  <button
+                    class="ui disabled button mb-5"
+                    style="margin-left: 3.5%"
+                  >
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                  </button></div>
+                  {% endif %} {% if request.user in obj.friends.all %}
+                  <form
+                    action="{% url 'remove-friend' %}"
+                    method="POST"
+                    style="display: inherit; margin-left: 3.5%"
+                  >
+                    {% csrf_token %}
+                    <input type="hidden" name="profile_pk" value="{{obj.pk}}" />
+                    <div style="    display: inline-block;
+    width: 227%;
+    text-align: -webkit-right;">
+                    <button type="submit" class="ui negative basic button mb-5">
+                      <i class="fa fa-user-times" aria-hidden="true"></i>
+                    </button></div>
+                  </form>
+                  {% endif %}
+                </span>
+
+                <div
+                  style="
+                    justify-content: left;
+                    width: 100%;
+                    display: inline;
+                    display: -webkit-box;
+                  "
+                >
+                  <a href="{{obj.get_absolute_url}}">
+                    <button
+                      class="login100-form-btn"
+                      style="display: inline-block; height: 40px"
+                    >
+                      See profile
+                    </button></a
+                  >
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

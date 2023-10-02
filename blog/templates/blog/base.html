@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Web - Project</title>
+             <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'blog/css/vendor/bootstrap.min.css' %} "
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'blog/css/vendor/font-awesome.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'blog/css/vendor/animate.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'blog/css/vendor/hamburgers.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'blog/css/util.css' %}" />
+    <link rel="stylesheet" href="{% static 'blog/css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'blog/css/main.css' %}" />
+    <link rel="icon" type="image/png" href="{% static 'blog/favicon.ico' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--Custom css-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700"
+      rel="stylesheet"
+    />
+
+        <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <!-- semantic UI -->
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.png" />
+
+    <!-- Place favicon.ico in the root directory -->
+
+    <style>
+      .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: 100%;
+      }
+
+      .tabs__label {
+        padding: 10px 16px;
+      }
+
+      .tabs__radio {
+        display: none;
+      }
+
+      .tabs__content {
+        order: 1;
+        width: 100%;
+        border-bottom: 3px solid #dddddd;
+        line-height: 1.5;
+        font-size: 0.9em;
+        display: none;
+      }
+
+      .tabs__radio:checked + .tabs__label {
+        font-weight: bold;
+        color: #8b54c7;
+        border-bottom: 2px solid #8b54c7;
+      }
+
+      .tabs__radio:checked + .tabs__label + .tabs__content {
+        display: initial;
+      }
+    </style>
+  </head>
+  <body hx-headers = "{'X-CSRFToken' : '{{ csrf_token }}'} ">
+    <div class="limiter">
+      <div class="container-login100" style="align-items: flex-start;">
+        <div class="wrap-main">
+          <div class="container-fluid">
+            <div class="row">
+              <nav class="navbar navbar-expand-lg navbar-light bgwhite">
+                <a
+                  class="navbar-brand ProjectColor"
+                  href="{% url 'blog-home' %}"
+                  >WebProject</a
+                >
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div
+                  class="collapse navbar-collapse"
+                  id="navbarSupportedContent"
+                >
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item ">
+                      <a class="nav-link fs-15" href="{% url 'blog-home' %}"
+                        >Home <span class="sr-only">(current)</span></a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link fs-15" href="{% url 'profile' %}"
+                        >Profile</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link fs-15"
+                        href="{% url 'my-invites-view' %}"
+                        >Friend requests</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link fs-15"
+                        href="{% url 'all-profiles-view' %}"
+                        >all users</a
+                      >
+                    </li>
+                    <li class="nav-item pt-2 pl-3">
+                      <form
+                        action="{% url 'search' %}"
+                        method="POST"
+                        id="search"
+                      >
+                        {% csrf_token %}
+                        <input
+                          type="search"
+                          name="searched"
+                          class="p-1 fs-14 pl-3 input-border"
+                          placeholder="Search .. !"
+                        />
+                      </form>
+                    </li>
+                  </ul>
+
+                  <div class="form-inline my-2 my-lg-0">
+                    <ul class="navbar-nav mr-auto">
+                      <li class="nav-item active">
+                        <a
+                          class="nav-link fs-18"
+                          href="{% url 'blog-logout' %}"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          ><i class="fa fa-sign-out" aria-hidden="true"></i
+                        ></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+              <div class="col-sm-3 mobile-hidden">
+          <div class="main-block">
+            <div
+              class="coverPicture"
+              style="background: url('{{ user.profile.bgimage.url }}');"
+            ></div>
+            <div
+              class="profilePicture"
+              style="background: url('{{ user.profile.image.url }}');"
+            ></div>
+            <div class="FullName text-center fs-18 ProjectColor">
+              {{ user }}
+            </div>
+            <div class="row statistic text-center fs-16 p-3">
+              <div class="col">
+                <p>Friends</p>
+                <br />
+                <p>{{ user.profile.get_friends_no }}</p>
+              </div>
+              <div class="col border-left">
+                <p>Posts</p>
+                <br />
+                <p>{{ user.profile.get_posts_no }}</p>
+              </div>
+            </div>
+            <!-- {% if object.user == request.user %}
+            {% else %}
+            {% if object.user not in rel_receiver and object.user not in rel_sender %}
+                <form action="{% url 'send-invite' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                    <button type="submit" class="ui positive basic button mb-5 w-big"><i class="plus square icon"></i>Add to friends</button>
+                </form>
+            {% endif %}
+
+            {% if object.user in rel_receiver and request.user not in object.friends.all %}
+                <button class="ui disabled button mb-5 w-big"><i class="user icon"></i>Waiting for approval</button>
+            {% endif %}
+
+            {% if request.user in object.friends.all %}
+                <form action="{% url 'remove-friend' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                    <button type="submit" class="ui negative basic button mb-5 w-big"><i class="minus square icon"></i>Remove from friends</button>
+                </form>
+            {% endif %}
+            {% endif %} -->
+          </div>
+        </div>
+        
+        {% block content %} {% endblock content %} {% block title %} 
+          {% endblock title %} {% block scripts %} {% endblock scripts %}
+            </div>
+          </div>
+          
+
+          
+        </div>
+      </div>
+    </div>
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <script src=" {% static 'blog/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    <script src="{% static 'blog/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'blog/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/vendor/tilt.jquery.min.js' %}"></script>
+    <script src="{% static 'blog/js/plugins.js' %}"></script>
+    <script>
+      $(".js-tilt").tilt({
+        scale: 1.1,
+      });
+    </script>
+
+    <script src="{% static 'blog/js/main.js' %}"></script>
+    <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script
+      src="https://www.google-analytics.com/analytics.js"
+      async
+      defer
+    ></script>
+  </body>
+</html>

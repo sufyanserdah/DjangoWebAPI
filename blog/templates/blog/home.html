@@ -1,0 +1,76 @@
+{% extends "blog/base.html" %} {% load static %}
+<!DOCTYPE html>
+
+    {% block content %}
+
+    <div class="container mt-5" style="width: 75%;">
+      <div class="row" style="width: 130%;">
+       
+        <div class="col-sm-6 mobile-hidden">
+          {% if post_added %}
+          <div class="ui green message">Post added</div>
+          {% endif %}
+          <div
+            style="
+              background-color: white;
+              padding-bottom: 2.25%;
+              margin-bottom: 3%;
+            "
+            id="Post_form"
+          >
+           {% include 'blog/Post_form.html' %} 
+            
+          </div>
+          <div id="all_posts">
+
+          {% include 'blog/post-list.html' %}
+          
+          </div>
+        </div>
+    {% if nofriend|length != 1  %}
+        <div class="col-3 mobile-hidden">
+          <div class="main-block">
+            <div class="row">
+              <div class="col pl-4">
+                <p class="fs-14 font-cairo font-weight-600">
+                  People you may know
+                </p>
+              </div>
+            </div>
+            
+            {% for friend in nofriend %} 
+            {% if friend.user.username != user.username %}
+            <hr class="m-1" />
+            <div class="row">
+              <div class="col-3">
+                <div class="pt-2 pl-2 d-inline-block">
+                  <div
+                    class="Profile-Picture"
+                    style="background: url('{{ friend.image.url }}');width: 40px;height: 40px;    border: 1.5px solid #8B54C7; "
+                  ></div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="UserName d-inline-block mt-3">
+                  <p>
+                    <a
+                      href="{% url 'profile-detail-view' friend.slug %}"
+                      class="font-weight-bold"
+                      >{{ friend.user }}</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {% endif %} 
+            {% endfor %}
+            {% else %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% endblock content %}
